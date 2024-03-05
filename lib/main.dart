@@ -1,5 +1,4 @@
-import 'package:clock_app/clock2_home.dart';
-import 'package:clock_app/clock_home.dart';
+import 'package:clock_app/screens/clock_home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
