@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-
 class ClockApp extends StatefulWidget {
   const ClockApp({super.key});
 
@@ -12,6 +11,10 @@ class ClockApp extends StatefulWidget {
 class _ClockAppState extends State<ClockApp> {
   int? hour, minuite, second;
   int? year, month, day;
+
+  bool digital = false;
+  bool analog = true;
+  bool strack = false;
 
   @override
   void initState() {
@@ -28,7 +31,7 @@ class _ClockAppState extends State<ClockApp> {
           child: Stack(
             children: [
               Visibility(
-                visible: false,
+                visible: digital,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -38,14 +41,15 @@ class _ClockAppState extends State<ClockApp> {
                         height: 250,
                         width: MediaQuery.sizeOf(context).width / 2,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                            gradient: LinearGradient(
-                                colors: [
-                                  Colors.orange.withOpacity(0.7),
-                                  Colors.orange.withOpacity(0.5)
-                                ],
-                                end: Alignment.centerRight,
-                                begin: Alignment.centerLeft)),
+                          borderRadius: BorderRadius.circular(40),
+                          gradient: LinearGradient(
+                              colors: [
+                                Colors.orange.withOpacity(0.7),
+                                Colors.orange.withOpacity(0.5)
+                              ],
+                              end: Alignment.centerRight,
+                              begin: Alignment.centerLeft),
+                        ),
                       ),
                     ),
                     Transform.rotate(
@@ -54,14 +58,15 @@ class _ClockAppState extends State<ClockApp> {
                         height: 250,
                         width: MediaQuery.sizeOf(context).width / 2,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                            gradient: LinearGradient(
-                                colors: [
-                                  Colors.white.withOpacity(0.7),
-                                  Colors.white.withOpacity(0.2)
-                                ],
-                                end: Alignment.centerRight,
-                                begin: Alignment.centerLeft)),
+                          borderRadius: BorderRadius.circular(40),
+                          gradient: LinearGradient(
+                              colors: [
+                                Colors.white.withOpacity(0.7),
+                                Colors.white.withOpacity(0.2)
+                              ],
+                              end: Alignment.centerRight,
+                              begin: Alignment.centerLeft),
+                        ),
                       ),
                     ),
                     Transform.rotate(
@@ -70,14 +75,15 @@ class _ClockAppState extends State<ClockApp> {
                         height: 250,
                         width: MediaQuery.sizeOf(context).width / 2,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                            gradient: LinearGradient(
-                                colors: [
-                                  Colors.green.withOpacity(0.7),
-                                  Colors.green.withOpacity(0.2)
-                                ],
-                                end: Alignment.centerRight,
-                                begin: Alignment.centerLeft)),
+                          borderRadius: BorderRadius.circular(40),
+                          gradient: LinearGradient(
+                              colors: [
+                                Colors.green.withOpacity(0.7),
+                                Colors.green.withOpacity(0.2)
+                              ],
+                              end: Alignment.centerRight,
+                              begin: Alignment.centerLeft),
+                        ),
                       ),
                     ),
                     Column(
@@ -104,7 +110,7 @@ class _ClockAppState extends State<ClockApp> {
                 ),
               ),
               Visibility(
-                visible: false,
+                visible: analog,
                 child: Stack(
                   children: [
                     Stack(
@@ -114,7 +120,9 @@ class _ClockAppState extends State<ClockApp> {
                         (index) => Transform.rotate(
                           angle: (pi * 2) * index / 60,
                           child: Divider(
-                            color: index % 5 == 0 ? Colors.red : Colors.white,
+                            color: index % 5 == 0
+                                ? const Color(0xff7c302c)
+                                : Colors.white,
                             endIndent: index % 5 == 0
                                 ? MediaQuery.sizeOf(context).width * 0.90
                                 : MediaQuery.sizeOf(context).width * 0.95,
@@ -131,7 +139,7 @@ class _ClockAppState extends State<ClockApp> {
                             child: Divider(
                               endIndent: MediaQuery.sizeOf(context).width / 2,
                               thickness: 4,
-                              color: Colors.blue,
+                              color: Colors.white,
                               indent: 100,
                             ),
                           ),
@@ -155,7 +163,7 @@ class _ClockAppState extends State<ClockApp> {
                             child: Divider(
                               endIndent: MediaQuery.sizeOf(context).width / 2,
                               thickness: 4,
-                              color: Colors.purple,
+                              color: Colors.orange,
                               indent: 60,
                             ),
                           ),
@@ -166,11 +174,11 @@ class _ClockAppState extends State<ClockApp> {
                 ),
               ),
               Visibility(
-                visible: true,
+                visible: strack,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       height: 300,
                       width: 300,
                       child: CircularProgressIndicator(
@@ -181,7 +189,7 @@ class _ClockAppState extends State<ClockApp> {
                         strokeWidth: 20,
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 260,
                       width: 260,
                       child: CircularProgressIndicator(
@@ -192,7 +200,7 @@ class _ClockAppState extends State<ClockApp> {
                         strokeWidth: 20,
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 220,
                       width: 220,
                       child: CircularProgressIndicator(
@@ -206,9 +214,12 @@ class _ClockAppState extends State<ClockApp> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Wednesday",style: TextStyle(color: Colors.white,fontSize: 22),),
+                        const Text(
+                          "Wednesday",
+                          style: TextStyle(color: Colors.white, fontSize: 22),
+                        ),
                         Text(
-                          "$day-$month-$year",
+                          "$day - $month - $year",
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -234,21 +245,42 @@ class _ClockAppState extends State<ClockApp> {
             children: [
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    digital == true;
+                    analog == false;
+                    strack == false;
+                    Navigator.pop(context);
+                  });
+                },
                 child: const Text("Digital Watch"),
               ),
               const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    digital == false;
+                    analog == true;
+                    strack == false;
+                    Navigator.pop(context);
+                  });
+                },
                 child: const Text("Analog Watch"),
               ),
               const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    digital == false;
+                    analog == false;
+                    strack == true;
+                    Navigator.pop(context);
+                  });
+                },
                 child: const Text("Strap Watch"),
               ),
             ],
@@ -267,9 +299,12 @@ class _ClockAppState extends State<ClockApp> {
       day = DateTime.now().day;
       month = DateTime.now().month;
       year = DateTime.now().year;
+
+
     });
     Future.delayed(const Duration(seconds: 1), () {
       timer();
+
     });
   }
 }
